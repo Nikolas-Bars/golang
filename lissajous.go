@@ -15,15 +15,15 @@ import (
 	"io"
 	"math"
 	"math/rand"
-	"os"
+	//"os"
 )
 
 //!-main
 // Packages not needed by version in book.
 import (
-	"log"
-	"net/http"
-	"time"
+	//"log"
+	//"net/http"
+	//"time"
 )
 
 //!+main
@@ -34,29 +34,7 @@ const (
 	whiteIndex = 0 // first color in palette
 	blackIndex = 1 // next color in palette
 )
-
-func main() {
-	//!-main
-	// The sequence of images is deterministic unless we seed
-	// the pseudo-random number generator using the current time.
-	// Thanks to Randall McPherson for pointing out the omission.
-	rand.Seed(time.Now().UTC().UnixNano())
-
-	if len(os.Args) > 1 && os.Args[1] == "web" {
-		//!+http
-		handler := func(w http.ResponseWriter, r *http.Request) {
-			lissajous(w)
-		}
-		http.HandleFunc("/", handler)
-		//!-http
-		log.Fatal(http.ListenAndServe("localhost:8000", nil))
-		return
-	}
-	//!+main
-	lissajous(os.Stdout)
-}
-
-func lissajous(out io.Writer) {
+func Lissajous(out io.Writer) {
 	const (
 		cycles  = 5     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
@@ -82,5 +60,27 @@ func lissajous(out io.Writer) {
 	}
 	gif.EncodeAll(out, &anim) // NOTE: ignoring encoding errors
 }
+
+// func main() {
+// 	//!-main
+// 	// The sequence of images is deterministic unless we seed
+// 	// the pseudo-random number generator using the current time.
+// 	// Thanks to Randall McPherson for pointing out the omission.
+// 	rand.Seed(time.Now().UTC().UnixNano())
+
+// 	if len(os.Args) > 1 && os.Args[1] == "web" {
+// 		//!+http
+// 		handler := func(w http.ResponseWriter, r *http.Request) {
+// 			Lissajous(w)
+// 		}
+// 		http.HandleFunc("/", handler)
+// 		//!-http
+// 		log.Fatal(http.ListenAndServe("localhost:8000", nil))
+// 		return
+// 	}
+// 	//!+main
+// 	Lissajous(os.Stdout)
+// }
+
 
 //!-main

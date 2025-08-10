@@ -73,3 +73,57 @@ func fetch(url string, ch chan<- string) {
     // и отправляем её в канал
     ch <- fmt.Sprintf("%.2fs %7d %s", secs, nbytes, url)
 }
+
+
+// ПРИМЕ С ЗАПИСЬЮ В ФАЙЛ
+
+// func fetch(url string, ch chan<- string) {
+// 	start := time.Now()
+// 	resp, err := http.Get(url)
+
+// 	if err != nil {
+// 		ch <- fmt.Sprintf("error fetching %s: %v", url, err)
+// 		return
+// 	}
+
+// 	nbytes, err := io.Copy(io.Discard, resp.Body)
+// 	resp.Body.Close()
+
+// 	if err != nil {
+// 		ch <- fmt.Sprintf("error reading %s: %v", url, err)
+// 		return
+// 	}
+
+// 	secs := time.Since(start).Seconds()
+// 	ch <- fmt.Sprintf("%.2fs %7d %s", secs, nbytes, url)
+// }
+
+// func main() {
+// 	// Открываем файл для записи (если не существует — создаём, если существует — перезаписываем)
+// 	file, err := os.Create("fetchall.log")
+// 	if err != nil {
+// 		fmt.Fprintf(os.Stderr, "error creating file: %v\n", err)
+// 		os.Exit(1)
+// 	}
+// 	defer file.Close() // Закрываем файл при завершении программы
+
+// 	start := time.Now()
+// 	ch := make(chan string)
+
+// 	// Запускаем горутины для каждого URL
+// 	for _, url := range os.Args[1:] {
+// 		go fetch(url, ch)
+// 	}
+
+// 	// Собираем результаты
+// 	for range os.Args[1:] {
+// 		result := <-ch
+// 		fmt.Println(result)                  // Вывод в консоль (опционально)
+// 		fmt.Fprintln(file, result)           // Запись в файл
+// 	}
+
+// 	// Записываем общее время выполнения
+// 	totalTime := fmt.Sprintf("%.2fs elapsed\n", time.Since(start).Seconds())
+// 	fmt.Print(totalTime)
+// 	fmt.Fprint(file, totalTime)
+// }
