@@ -22,7 +22,7 @@ func main() {
     // log.Fatal завершит программу с выводом ошибки, если сервер не запустится
     log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
-func handler(w http.ResponseWriter, г *http.Request) {
+func handler(w http.ResponseWriter, r *http.Request) {
     Lissajous(w)
 }
 
